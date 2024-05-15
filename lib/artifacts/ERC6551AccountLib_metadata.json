@@ -1,0 +1,69 @@
+{
+	"compiler": {
+		"version": "0.8.25+commit.b61c2a91"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/lib/ERC6551AccountLib.sol": "ERC6551AccountLib"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/lib/ERC6551AccountLib.sol": {
+			"keccak256": "0xd4779c30545dc8d5e149e336efcf2d8c9d88e9e9398c3017237c38c214efd6b2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ef6947ef7200b641752d648a3ffb14ffb58870e6c18f53157b53478aacf54c3a",
+				"dweb:/ipfs/QmaA42qT73uc144XSu5Sv4FZ7i7nykZvJywEvsa8USJVJD"
+			]
+		},
+		"contracts/lib/ERC6551BytecodeLib.sol": {
+			"keccak256": "0x8ddfc7d0828b7d81d43f6feb926ff1a8a41dd8f36762c869c252ba7fd46ab3d3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e3d58e05b93e8e1195e3de340decca2a8e70ef6db81c84257077a18f06caab17",
+				"dweb:/ipfs/QmU7jS79JLJkTxwoTrPvipW9i8eJg4cmNhhdfBtf2RKXJS"
+			]
+		},
+		"contracts/openzeppelin/contracts/utils/Create2.sol": {
+			"keccak256": "0x195b4bc306db2d83aef28562161eab38c337ab2dc07b7968167a93a12367a3ae",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://debf3ab1f7a6cd54e3cd27478eb632cd596518dffeabff34808249d8e980a66a",
+				"dweb:/ipfs/QmNutCZHkJqsZqATxMQQzNnx9Frnaz2ufiAW5thXN1YXND"
+			]
+		},
+		"contracts/openzeppelin/contracts/utils/Errors.sol": {
+			"keccak256": "0x1b0625096e82d06abdcf1844172ef78ef54a5e878761f4d905fda07eaf098424",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5cd99f1a4836c07461cb3ea023ae2f6d1d01e80694b764a87623aa7252754756",
+				"dweb:/ipfs/QmNPNDuiNU6TJatZcdBcrwixBoo5MSXNDq4kaXhpJLWGpB"
+			]
+		}
+	},
+	"version": 1
+}

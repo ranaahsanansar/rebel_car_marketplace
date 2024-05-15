@@ -1,0 +1,59 @@
+{
+	"compiler": {
+		"version": "0.8.25+commit.b61c2a91"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "implementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/interfaces/IERC6551Account.sol": "IERC6551AccountProxy"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/interfaces/IERC6551Account.sol": {
+			"keccak256": "0x160438a021c217d1e06282b7402425d430d0de5f32545a774183b4e69c62c6c2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a4e0eaee7e7b2a0753a5a7c312906b93646e451983285a6071c1649e25039c8d",
+				"dweb:/ipfs/QmVwhBDLuesVK4F6283SJuQeq8L4Ekm53U2JnmiWkmUNyG"
+			]
+		}
+	},
+	"version": 1
+}
