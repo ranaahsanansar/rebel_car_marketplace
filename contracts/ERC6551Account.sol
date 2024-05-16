@@ -21,15 +21,11 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account {
 
 
     // modifiers 
-
     modifier onlyMechanicContract(){
         require(msg.sender == mechanicContract, "Only mechanic can call this function");
         _;
     }
 
-// function operatorContract() public view returns (address) {
-//         return admin;
-//     }
 
     // TODO: Change This 
     receive() external payable {}
@@ -108,23 +104,30 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account {
 
     function safeTransferFrom721(address from, address to, uint256 tokenId, address contractAddress) onlyMechanicContract public {
         ++nonce;
-        // bytes memory data = abi.encodeWithSignature("safeTransferFrom721(address,address,uint256,address)", from, address to, uint256 tokenId, address contractAddress)
+        bytes memory data = abi.encodeWithSignature("safeTransferFrom721(address,address,uint256,address)", from,  to,  tokenId, contractAddress);
+        emit TransactionExecuted(contractAddress, 0, data);
         return IERC721(contractAddress).safeTransferFrom(from, to, tokenId);
     }
 
     function transferFrom721(address from, address to, uint256 tokenId, address contractAddress) onlyMechanicContract public {
         ++nonce;
+        bytes memory data = abi.encodeWithSignature("transferFrom721(address,address,uint256,address)", from,  to,  tokenId, contractAddress);
+        emit TransactionExecuted(contractAddress, 0, data);
         return IERC721(contractAddress).transferFrom(from, to, tokenId);
     }
 
 
     function transferFrom20(address from, address to, uint256 amount, address contractAddress) onlyMechanicContract public returns (bool){
         ++nonce;
+        bytes memory data = abi.encodeWithSignature("transferFrom20(address,address,uint256,address)", from,  to,  amount, contractAddress);
+        emit TransactionExecuted(contractAddress, 0, data);
         return IERC20(contractAddress).transferFrom(from, to, amount);
     }
 
     function transfer20(address to, uint256 amount, address contractAddress) onlyMechanicContract public returns (bool){
         ++nonce;
+        bytes memory data = abi.encodeWithSignature("transfer20(address,uint256,address)", amount,  to,  amount, contractAddress);
+        emit TransactionExecuted(contractAddress, 0, data);
         return IERC20(contractAddress).transfer(to, amount);
     }
 

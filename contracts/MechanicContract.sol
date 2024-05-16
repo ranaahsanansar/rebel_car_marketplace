@@ -32,7 +32,7 @@ contract MechanicContract {
     }
 
     // deatch part from RC_car and transfer to the owner of the car 
-    function detachSparePart(uint256 _sparePartId)  external onlySystemWallet {
+    function detachSparePart(uint256 _sparePartId)  public  onlySystemWallet {
         
         address tbaAddress = rcCollection.ownerOf(_sparePartId);
         IERC6551Account tbaContract =  IERC6551Account(tbaAddress);
@@ -46,15 +46,32 @@ contract MechanicContract {
 
 
     // Attach part from onwer to rc_car
-    function attachSparePart(uint256 _sparePartId , uint256 _token) external onlySystemWallet {
+    function attachSparePart(uint256 _sparePartId , uint256 _token) public  onlySystemWallet {
         require(_sparePartId != _token , "Token Id should be different" );
-        address currentOwner = rcCollection.ownerOf(_sparePartId);
-
+        address currentOwnerOfSparePart = rcCollection.ownerOf(_sparePartId);
+        address tokenOwner = rcCollection.ownerOf(_token);
+        require(currentOwnerOfSparePart == tokenOwner, "Onwer of both nfts should be same");
+        
         address tbaAddress = registeryContract.getAccount(_token);
 
-        rcCollection.safeTransferFrom(currentOwner, tbaAddress, _sparePartId);
+        rcCollection.safeTransferFrom(currentOwnerOfSparePart, tbaAddress, _sparePartId);
 
-        emit AttachedSparePart(_sparePartId, _token, currentOwner, tbaAddress);
+        emit AttachedSparePart(_sparePartId, _token, currentOwnerOfSparePart, tbaAddress);
+    }
+
+
+    // Add Bulk attach
+    function bulkAttach(uint256[] memory _sparePartIds, uint256 _token) external  onlySystemWallet {
+        for (uint i = 0 ; i < _sparePartIds.length; i++){
+            this.attachSparePart(_sparePartIds[i], _token);
+        }
+    }
+
+    // Add Bulk Detach
+    function bulkDetach(uint256[] memory _sparePartIds) external onlySystemWallet {
+        for (uint i = 0 ; i < _sparePartIds.length; i++){
+            this.detachSparePart(_sparePartIds[i]);
+        }
     }
 
 }
