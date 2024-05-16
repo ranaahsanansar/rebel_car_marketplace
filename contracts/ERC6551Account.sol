@@ -11,7 +11,7 @@ import "contracts/openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "./interfaces/IERC6551Account.sol";
 import "./lib/ERC6551AccountLib.sol";
 import "contracts/openzeppelin/contracts/access/Ownable.sol";
-
+import "contracts/FunCheckInterface.sol";
 
 contract ERC6551Account is IERC165, IERC1271, IERC6551Account {
 
@@ -51,6 +51,20 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account {
     ) external payable onlyMechanicContract returns (bytes memory result)  {
         
         ++nonce;
+        bytes memory calling = data;
+        bytes4 calldataSelector;
+        assembly {
+            calldataSelector := mload(add(calling, 32))
+        }
+
+        if (calldataSelector == FunChecks(to).safeTransferFrom.selector 
+        || calldataSelector == FunChecks(to).transferFrom.selector
+        || calldataSelector == FunChecks(to).approve.selector
+        || calldataSelector == FunChecks(to).setApprovalForAll.selector
+        || calldataSelector == FunChecks(to).bulkTransfer.selector
+        ) {
+            revert("Restricted functions");
+        }
 
         emit TransactionExecuted(to, value, data);
 

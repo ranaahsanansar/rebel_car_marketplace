@@ -4,6 +4,9 @@ pragma solidity ^0.8.20;
 import "contracts/openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "contracts/interfaces/IERC6551Registry.sol";
 import "contracts/interfaces/IERC6551Account.sol";
+import "contracts/FunCheckInterface.sol";
+
+
 
 contract MechanicContract {
 
@@ -44,7 +47,6 @@ contract MechanicContract {
        
     }
 
-
     // Attach part from onwer to rc_car
     function attachSparePart(uint256 _sparePartId , uint256 _token) public  onlySystemWallet {
         require(_sparePartId != _token , "Token Id should be different" );
@@ -59,18 +61,40 @@ contract MechanicContract {
         emit AttachedSparePart(_sparePartId, _token, currentOwnerOfSparePart, tbaAddress);
     }
 
-
     // Add Bulk attach
     function bulkAttach(uint256[] memory _sparePartIds, uint256 _token) external  onlySystemWallet {
         for (uint i = 0 ; i < _sparePartIds.length; i++){
-            this.attachSparePart(_sparePartIds[i], _token);
+            attachSparePart(_sparePartIds[i], _token);
         }
     }
 
     // Add Bulk Detach
     function bulkDetach(uint256[] memory _sparePartIds) external onlySystemWallet {
         for (uint i = 0 ; i < _sparePartIds.length; i++){
-            this.detachSparePart(_sparePartIds[i]);
+            detachSparePart(_sparePartIds[i]);
+        }
+    }
+
+    function genericCall(address to, bytes calldata data)  external onlySystemWallet returns (bytes memory result) {
+        bytes memory calling = data;
+        bytes4 calldataSelector;
+        assembly {
+            calldataSelector := mload(add(calling, 32))
+        }
+
+        if (calldataSelector == FunChecks(to).safeTransferFrom.selector 
+        || calldataSelector == FunChecks(to).transferFrom.selector
+        || calldataSelector == FunChecks(to).safeTransferFrom721.selector
+        || calldataSelector == FunChecks(to).transferFrom721.selector
+        ) {
+            revert("Cannot call this function");
+        }
+        bool success;
+        (success, result) = to.call(data);
+        if (!success) {
+            assembly {
+                revert(add(result, 32), mload(result))
+            }
         }
     }
 

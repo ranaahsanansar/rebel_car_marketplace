@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "contracts/openzeppelin/contracts/utils/Create2.sol";
 import "contracts/interfaces/IERC6551Registry.sol";
+import "contracts/openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract ERC6551Registry is IERC6551Registry {
     error InitializationFailed();
@@ -12,17 +13,25 @@ contract ERC6551Registry is IERC6551Registry {
     uint256 chainId;
     bytes initData;
     uint256 salt;
+    address deployer;
 
-    constructor(address _tokenContract, address _implementationAddress, uint256 _salt, bytes memory _initData){
+    constructor(address _tokenContract, address _implementationAddress, uint256 _salt){
         tokenContract = _tokenContract;
         implementationAddress = _implementationAddress;
         chainId = block.chainid;
         salt = _salt;
-        initData= _initData;
+        deployer = msg.sender;
     }
 
     mapping(address => uint256) public accountToTokenId;
     mapping(uint256 => address) public tokenIdToAccount;
+
+
+    // TODO: Set Security Check 
+    function setInitData(bytes memory data) external {
+        require(deployer == msg.sender, "Only Deployer can use this function");
+        initData = data;
+    }
 
     function getAccount(uint256 _tokenId) external view returns (address) {
         return tokenIdToAccount[_tokenId];
@@ -35,7 +44,8 @@ contract ERC6551Registry is IERC6551Registry {
     function createAccount(
         uint256 tokenId
     ) external returns (address) {
-
+        IERC721 contractInstance = IERC721(tokenContract);
+        require(contractInstance.ownerOf(tokenId) != address(0), "Invalid Token ID");
         require(tokenIdToAccount[tokenId] == address(0), "Account already deployed");
         bytes memory code = _creationCode(implementationAddress, chainId, tokenContract, tokenId, salt);
 
